@@ -13,7 +13,7 @@ class BrandController extends \yii\web\Controller
     {
         //分页 总条数 每页显示条数 当前第几页
         $query = Brand::find();
-        //总条数1
+        //总条数12
         $total = $query->count();
         //var_dump($total);exit;
         //每页显示条数 4
