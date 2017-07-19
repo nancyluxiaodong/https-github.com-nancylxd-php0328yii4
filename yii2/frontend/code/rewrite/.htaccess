@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteRule topic-music-id100.html 1.php 
+RewriteRule 1.html 2.php
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule a.html images.html
