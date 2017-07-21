@@ -17,14 +17,15 @@ use Yii;
 class Brand extends \yii\db\ActiveRecord
 {
     public $logoFile;
-    public static function getStatusOptions($hidden_del=true){
-        $options = [
-            -1=>'删除',0=>'隐藏',1=>'上架',
+    public static function status_options($option=false){
+        $status=[
+            //状态(-1删除 0隐藏 1正常)
+            -1=>'删除',0=>'隐藏',1=>'正常'
         ];
-        if($hidden_del){
-            unset($options[-1]);
+        if ($option==false){
+            unset($status[-1]);
         }
-        return $options;
+        return $status;
     }
     /**
      * @inheritdoc
@@ -40,12 +41,12 @@ class Brand extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['intro'], 'string'],
+            [['sort','name','intro','status'], 'required','message'=>'{attribute}必填'],
+            //[['intro'], 'string'],
             [['sort', 'status'], 'integer'],
+            [['status'], 'string' ],
             [['name'], 'string', 'max' => 50],
-            [['logo'], 'string', 'max' => 100],
-            //[['name','logo','sort','intro'],'required'],
-           // ['logoFile','file','extensions'=>['jpg','png','gif'],'skipOnEmpty'=>false],
+            [['logo'], 'string', 'max' => 255],
         ];
     }
 
@@ -58,7 +59,7 @@ class Brand extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '名称',
             'intro' => '简介',
-            'logo' => '图片',
+            'logo' => 'LOGO',
             'sort' => '排序',
             'status' => '状态',
         ];

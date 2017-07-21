@@ -17,7 +17,6 @@ use Yii;
 class ArticleCategory extends \yii\db\ActiveRecord
 {
 
-
     public static function getStatusOptions($hidden_del=true){
         $options = [
             -1=>'删除',0=>'隐藏',1=>'上架',
