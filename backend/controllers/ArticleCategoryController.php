@@ -41,7 +41,7 @@ class ArticleCategoryController extends \yii\web\Controller
             if($model->validate()){
                     $model->save();
                     //跳转页面
-                    return $this->redirect(['article_category/index']);
+                    return $this->redirect(['article-category/index']);
                 }else{
                     var_dump($model->getErrors());
                 }
@@ -63,7 +63,7 @@ class ArticleCategoryController extends \yii\web\Controller
                 //var_dump($model);exit;
                     $model->save();
                     //跳转页面
-                    return $this->redirect(['article_category/index']);
+                    return $this->redirect(['article-category/index']);
                 }else{
                     var_dump($model->getErrors());
                 }
@@ -73,7 +73,7 @@ class ArticleCategoryController extends \yii\web\Controller
     public function actionDelete($id){
         $model = ArticleCategory::findOne(['id'=>$id]);
         $model->delete();
-        return $this->redirect(['article_category/index']);
+        return $this->redirect(['article-category/index']);
     }
 
 }

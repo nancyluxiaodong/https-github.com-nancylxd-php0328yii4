@@ -17,7 +17,8 @@ echo \yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-i
             <td><?=$article->id ?></td>
             <td><?=$article->name ?></td>
             <td><?=$article->intro ?></td>
-            <td><?=$article->articleCategory->name ?></td>
+
+            <td><?=$article->articleCategorys[$article->article_category_id] ?></td>
             <td><?=$article->sort ?></td>
             <td><?=\backend\models\Article::$status_all[$article->status] ?></td>
             <td><?=date('Y-m-d',$article->create_time)?></td>

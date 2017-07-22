@@ -37,22 +37,17 @@ class BrandController extends \yii\web\Controller
         $request = new Request();
 
         if($request->isPost){
-            //
             $model->load($request->post());
-            //var_dump($model);exit;
-            $model->logoFile = UploadedFile::getInstance($model,'logoFile');
-            //var_dump($model);exit;
+            //$model->logo= UploadedFile::getInstance($model,'logo');
             if($model->validate()){
-
-               //var_dump($model);exit;
-                if($model->logoFile){
+               /* if($model->logoFile){
                     $d = \Yii::getAlias('@webroot').'/upload/'.date('Ymd');
                     if(!is_dir($d)){
                         mkdir($d,0777,true);
                     }
                     $fileName = '/upload/'.date('Ymd').'/'.uniqid().'.'.$model->logoFile->extension;
                     $model->logoFile->saveAs(\Yii::getAlias('@webroot').$fileName,false);
-                    $model->logo = $fileName;
+                    $model->logo = $fileName;*/
                     //var_dump($model);exit;
                     $model->save();
                     //跳转页面
@@ -61,7 +56,6 @@ class BrandController extends \yii\web\Controller
                     var_dump($model->getErrors());
                 }
             }
-        }
         return $this->render('add',['model'=>$model]);
     }
 
@@ -76,19 +70,19 @@ class BrandController extends \yii\web\Controller
             //
             $model->load($request->post());
             //var_dump($model);exit;
-            $model->logoFile = UploadedFile::getInstance($model,'logoFile');
+            //$model->logoFile = UploadedFile::getInstance($model,'logoFile');
             //var_dump($model);exit;
             if($model->validate()){
 
                 //var_dump($model);exit;
-                if($model->logoFile){
+                /*if($model->logoFile){
                     $d = \Yii::getAlias('@webroot').'/upload/'.date('Ymd');
                     if(!is_dir($d)){
                         mkdir($d,0777,true);
                     }
                     $fileName = '/upload/'.date('Ymd').'/'.uniqid().'.'.$model->logoFile->extension;
                     $model->logoFile->saveAs(\Yii::getAlias('@webroot').$fileName,false);
-                    $model->logo = $fileName;
+                    $model->logo = $fileName;*/
                     //var_dump($model);exit;
                     $model->save();
                     //跳转页面
@@ -97,7 +91,7 @@ class BrandController extends \yii\web\Controller
                     var_dump($model->getErrors());
                 }
             }
-        }
+
         return $this->render('add',['model'=>$model]);
     }
     public function actionDelete($id){

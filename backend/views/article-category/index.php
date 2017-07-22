@@ -1,5 +1,5 @@
 <?php
-echo \yii\bootstrap\Html::a('添加',['article_category/add'],['class'=>'btn btn-sm btn-info'])
+echo \yii\bootstrap\Html::a('添加',['article-category/add'],['class'=>'btn btn-sm btn-info'])
 ?>
     <table class="table table-bordered table-hover table-condensed ">
         <tr>
@@ -17,8 +17,8 @@ echo \yii\bootstrap\Html::a('添加',['article_category/add'],['class'=>'btn btn
                 <td><?=$article_category->intro ?></td>
                 <td><?=$article_category->sort ?></td>
                 <td><?= \backend\models\Brand::getStatusOptions()[$article_category->status]?></td>
-                <td><?=\yii\bootstrap\Html::a('修改',['article_category/edit','id'=>$article_category->id],['class'=>'btn btn-sm btn-success'])?>
-                    <?=\yii\bootstrap\Html::a('删除',['article_category/delete','id'=>$article_category->id],['class'=>'btn btn-sm btn-danger'])?>
+                <td><?=\yii\bootstrap\Html::a('修改',['article-category/edit','id'=>$article_category->id],['class'=>'btn btn-sm btn-success'])?>
+                    <?=\yii\bootstrap\Html::a('删除',['article-category/delete','id'=>$article_category->id],['class'=>'btn btn-sm btn-danger'])?>
                 </td>
             </tr>
         <?php endforeach;?>

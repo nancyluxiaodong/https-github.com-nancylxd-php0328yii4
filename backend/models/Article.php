@@ -18,11 +18,31 @@ use Yii;
 class Article extends \yii\db\ActiveRecord
 {
     //建立和文章分类表的关系  1对1
-    public function getArticleCategory()
+    /*public function getArticleCategory()
     {
         return $this->hasOne(ArticleCategory::className(),
         ['id'=>'article_category_id']);//返回一个对象
+    }*/
+    //组长的代码
+    public  function getArticleCategorys(){
+        $this->hasOne(ArticleCategory::className(),['id'=>'article_category_id']);//hasOne 返回一个对象
+        $articleCategory=ArticleCategory::find()->all();
+        $articleCategorys=[];
+        foreach ($articleCategory as $a){
+            $articleCategorys[$a->id]=$a->name;
+        }
+        return  $articleCategorys;
     }
+//    public  function getArticleCategorys()
+//    {
+//       $all=$this->getArticleCategory()->find()->all();
+//        $categorys=[];
+//        foreach($all as $a){
+//            $categorys[$a->id]= $a->name;
+//        }
+//        return $categorys;
+//
+//    }
 
     /*public static function getStatusOptions($hidden_del=true){
         $options=[
