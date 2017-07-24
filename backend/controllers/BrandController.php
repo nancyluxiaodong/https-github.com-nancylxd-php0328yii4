@@ -100,7 +100,7 @@ class BrandController extends \yii\web\Controller
         return $this->redirect(['brand/index']);
     }
 
-
+//图片
     public function actions() {
         return [
             's-upload' => [

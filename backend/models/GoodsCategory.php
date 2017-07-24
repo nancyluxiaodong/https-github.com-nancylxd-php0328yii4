@@ -33,9 +33,9 @@ class GoodsCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tree', 'lft', 'rgt', 'depth', 'parend_id'], 'integer'],
+            [['tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
             [['name', 'intro'], 'string'],
-            [['name', 'parend_id'], 'required'],
+            [['name', 'parent_id'], 'required'],
             //分类名称不能重复
             ['name','unique'],
         ];
@@ -53,7 +53,7 @@ class GoodsCategory extends \yii\db\ActiveRecord
             'rgt' => '右值',
             'depth' => '层级',
             'name' => '名称',
-            'parend_id' => '上级分类ID',
+            'parent_id' => '上级分类ID',
             'intro' => '简介',
         ];
     }
@@ -85,7 +85,7 @@ class GoodsCategory extends \yii\db\ActiveRecord
 
     public static function getZNodes()
     {
-        return array_merge([['id'=>0,'parend_id'=>0,'name'=>'顶级分类']],self::find()->asArray()->all());
+        return array_merge([['id'=>0,'parent_id'=>0,'name'=>'顶级分类']],self::find()->asArray()->all());
     }
 
     public function getChildren()

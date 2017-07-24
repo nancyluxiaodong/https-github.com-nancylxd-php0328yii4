@@ -49,9 +49,9 @@ class GoodsCategoryController extends \yii\web\Controller
         $model = new GoodsCategory();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             //判断是否是添加一级分类（parent_id是否为0）
-            if ($model->parend_id) {
+            if ($model->parent_id) {
                 //添加非一级分类
-                $parent = GoodsCategory::findOne(['id' => $model->parend_id]);//获取上一级分类
+                $parent = GoodsCategory::findOne(['id' => $model->parent_id]);//获取上一级分类
                 $model->prependTo($parent);//添加到上一级分类下面
             } else {
                 //添加一级分类
@@ -59,7 +59,7 @@ class GoodsCategoryController extends \yii\web\Controller
             }
             return $this->redirect(['goods-category/index']);
         }
-        $categories = ArrayHelper::merge([['id' => 0, 'name' => '顶级分类', 'parend_id' => 0]], GoodsCategory::find()->asArray()->all());
+        $categories = ArrayHelper::merge([['id' => 0, 'name' => '顶级分类', 'parent_id' => 0]], GoodsCategory::find()->asArray()->all());
 
 
         return $this->render('add', ['model' => $model, 'categories' => $categories]);
@@ -74,29 +74,32 @@ class GoodsCategoryController extends \yii\web\Controller
         }
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             //判断是否是添加一级分类（parent_id是否为0）
-            if($model->parend_id){
+            if($model->parent_id){
                 //添加非一级分类
-                $parend = GoodsCategory::findOne(['id'=>$model->parend_id]);//获取上一级分类
-                $model->prependTo($parend);//添加到上一级分类下面
+                $parent = GoodsCategory::findOne(['id'=>$model->parent_id]);
+                //获取上一级分类
+                $model->prependTo($parent);
             }else{
                 //添加一级分类
                 $model->makeRoot();
             }
             return $this->redirect(['goods-category/index']);
         }
-        $categories = ArrayHelper::merge([['id'=>0,'name'=>'顶级分类','parend_id'=>0]],GoodsCategory::find()->asArray()->all());
+        $categories = ArrayHelper::merge([['id'=>0,'name'=>'顶级分类','parent_id'=>0]],GoodsCategory::find()->asArray()->all());
 
 
         return $this->render('add',['model'=>$model,'categories'=>$categories]);
     }
     public function actionDelete($id){
-        $goods = GoodsCategory::findOne(['parend_id'=>$id]);
         $model = GoodsCategory::findOne(['id'=>$id]);
+        $goods = GoodsCategory::findOne(['parent_id'=>$id]);
         //var_dump($model);exit;
           if($goods){
-              echo "不能删除有子分类的分类";
+              \yii::$app->session->setFlash('danger','删除失败,该分类有下级分类');
+              return $this->redirect(['goods-category/index']);
           }else{
-              $model->delete();
+
+              $model->deleteWithChildren();//这样可以删除顶级分类
               return $this->redirect(['goods-category/index']);
           }
         }

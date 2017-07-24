@@ -2,9 +2,10 @@
 /**
  * @var $this \yii\web\View
  */
+
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model,'name');
-echo $form->field($model,'parend_id')->hiddenInput();
+echo $form->field($model,'parent_id')->hiddenInput();
 echo '<ul id="treeDemo" class="ztree"></ul>';
 echo $form->field($model,'intro')->textarea();
 echo \yii\bootstrap\Html::submitButton('提交',['class'=>'btn btn-info']);
@@ -26,7 +27,7 @@ var zTreeObj;
             simpleData: {
                 enable: true,
                 idKey: "id",
-                pIdKey: "parend_id",
+                pIdKey: "parent_id",
                 rootPId: 0
             }
         },
@@ -34,7 +35,7 @@ var zTreeObj;
 		    onClick: function(event, treeId, treeNode) {
                 //console.log(treeNode.id);
                 //将选中节点的id赋值给表单parent_id
-                $("#goodscategory-parend_id").val(treeNode.id);
+                $("#goodscategory-parent_id").val(treeNode.id);
             }
 	    }
     };
@@ -44,7 +45,7 @@ var zTreeObj;
     zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     zTreeObj.expandAll(true);//展开所有节点
     //获取当前节点的父节点（根据id查找）
-    var node = zTreeObj.getNodeByParam("id", $("#goodscategory-parend_id").val(), null);
+    var node = zTreeObj.getNodeByParam("id", $("#goodscategory-parent_id").val(), null);
     zTreeObj.selectNode(node);//选中当前节点的父节点
 JS
 
