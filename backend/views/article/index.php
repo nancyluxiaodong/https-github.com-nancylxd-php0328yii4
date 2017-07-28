@@ -1,6 +1,16 @@
 <?php
 echo \yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-info'])
 ?>
+<?php
+$form=\yii\bootstrap\ActiveForm::begin([
+    'layout'=>'inline','method'=>'get','action'=>['article/index']
+]);
+echo $form->field($model,'name')->textInput(['placeholder'=>'标题']);
+echo $form->field($model,'sort')->textInput(['placeholder'=>'排序']);
+echo $form->field($model,'intro')->textInput(['placeholder'=>'简介']);
+echo \yii\bootstrap\Html::submitButton('搜索',['class'=>'btn btn-default']);
+\yii\bootstrap\ActiveForm::end();
+?>
 <table class="table table-bordered table-hover">
     <tr>
         <th>ID</th>
@@ -12,7 +22,7 @@ echo \yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-i
         <th>创建时间</th>
         <th>操作</th>
     </tr>
-    <?php foreach($model as $article): ?>
+    <?php foreach($articles as $article): ?>
         <tr>
             <td><?=$article->id ?></td>
             <td><?=$article->name ?></td>

@@ -17,8 +17,8 @@ class GoodsController extends \yii\web\Controller
     {
         //分页 总条数 每页显示条数 当前第几页
         $query = Goods::find()->orderBy('sort desc');
-        $query->andwhere(['!=','status','0']);
-        $query->andwhere('like','name','44');
+        //$query->andwhere(['!=','status','0']);
+        //$query->andwhere('like','name','44');
         //总条数
         $total = $query->count();
         //每页显示条数 4
@@ -103,7 +103,10 @@ class GoodsController extends \yii\web\Controller
     }
 
     //商品相册
-
+    public function actionGallery($id){
+        $goods = Goods::findOne(['id'=>$id]);
+        return $this->render('gallery',['goods'=>$goods]);
+    }
     //商品详情页面
     public function actionIntro($id){
         $model = Goods::findOne($id);

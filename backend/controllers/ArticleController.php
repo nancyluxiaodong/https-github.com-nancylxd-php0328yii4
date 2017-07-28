@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Article;
 use backend\models\ArticleCategory;
 use backend\models\ArticleDetail;
+use backend\models\ArticleSearchForm;
 use yii\data\Pagination;
 use yii\web\Request;
 
@@ -12,8 +13,25 @@ class ArticleController extends \yii\web\Controller
 {
     public function actionIndex()
     {
+
+        $model = new ArticleSearchForm();
         //分页 总条数 每页显示条数 当前第几页
+        /*$request = new Request();
+        if ($request->isPost) {
+            $model->load($request->post());
+        }*/
+        $model ->load(\Yii::$app->request->get());
         $query = Article::find()->where(['!=','status','-1'])->orderBy('sort desc');
+        //搜索功能
+        if($model->name){
+            $query->andWhere(['like','name',$model->name]);
+        }
+        if($model->intro){
+            $query->andWhere(['like','name',$model->intro]);
+        }
+        if($model->sort){
+            $query->andWhere(['like','name',$model->sort]);
+        }
         //总条数
         $total = $query->count();
         //每页显示条数 4
@@ -23,9 +41,9 @@ class ArticleController extends \yii\web\Controller
             'totalCount'=>$total,
             'defaultPageSize'=>$perPage
         ]);
-        $model = $query->limit($pager->limit)->offset($pager->offset)->all();
+        $articles = $query->limit($pager->limit)->offset($pager->offset)->all();
 
-        return $this->render('index',['model'=>$model,'pager'=>$pager]);
+        return $this->render('index',['model'=>$model,'articles'=>$articles,'pager'=>$pager]);
     }
     //添加表单
     public function actionAdd(){

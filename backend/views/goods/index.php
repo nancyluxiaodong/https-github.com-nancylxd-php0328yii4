@@ -1,15 +1,6 @@
 <?=\yii\bootstrap\Html::a('添加商品',['goods/add'],['class'=>'btn btn-success col-md-1']);?>
-<?php
-$form = \yii\bootstrap\ActiveForm::begin([
-        'method'=>'get',
-        'options'=>['class'=>'form-inline'],
-    ]);
-echo $form->field($goods,'name')->textInput(['placeholder'=>'商品名','name'=>'keyword']);
-\yii\bootstrap\ActiveForm::end();
-?>
 <table class="table table-bordered">
     <tr>
-        <th>ID</th>
         <th>商品名称</th>
         <th>货号</th>
         <th>logo图片</th>
@@ -26,7 +17,6 @@ echo $form->field($goods,'name')->textInput(['placeholder'=>'商品名','name'=>
     </tr>
     <?php foreach($model as $goods):?>
     <tr>
-        <td><?=$goods->id?></td>
         <td><?=$goods->name?></td>
         <td><?=$goods->sn?></td>
         <td><?=\yii\bootstrap\Html::img($goods->logo?$goods->logo:'/upload/default.png',['height'=>50]) ?></td>
@@ -40,6 +30,7 @@ echo $form->field($goods,'name')->textInput(['placeholder'=>'商品名','name'=>
         <td><?=date('Y-m-d',$goods->create_time)?></td>
         <td><?=$goods->view_times?></td>
         <td> <?=\yii\bootstrap\Html::a('查看商品详情',['goods/intro','id'=>$goods->id],['class'=>'btn btn-sm btn-success'])?>
+        <?=\yii\bootstrap\Html::a('相册',['goods/gallery','id'=>$goods->id],['class'=>'btn btn-sm btn-success'])?>
             <?=\yii\bootstrap\Html::a('修改',['goods/edit','id'=>$goods->id],['class'=>'btn btn-sm btn-success'])?>
             <?=\yii\bootstrap\Html::a('删除',['goods/delete','id'=>$goods->id],['class'=>'btn btn-sm btn-danger'])?>
         </td>
