@@ -81,7 +81,7 @@ var zTreeObj;
                 $("#goods-goods_category_id").val(treeNode.id);
                 //goods- 表示当前表名 goods_category_id 表示隐藏域的字段
                 //console.log($("#goods-goods_category_id").val());
-                
+              
             }
 	    }
     };

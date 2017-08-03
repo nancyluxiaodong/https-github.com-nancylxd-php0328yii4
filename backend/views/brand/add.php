@@ -12,7 +12,7 @@ echo $form->field($model,'logo')->hiddenInput();
 
 
 
-//外部TAG
+//外部 TAG
 echo \yii\bootstrap\Html::img(false,['id'=>'img','height'=>50]);
 echo \yii\bootstrap\Html::fileInput('test', NULL, ['id' => 'test']);
 echo \flyok666\uploadifive\Uploadifive::widget([
