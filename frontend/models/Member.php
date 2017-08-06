@@ -25,6 +25,8 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public $password;
     public $rePassword;
     public $code;
+    public $tel_code;
+    public $agree;
     /**
      * @inheritdoc
      */
@@ -44,10 +46,11 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 32],
             [['password_hash', 'email'], 'string', 'max' => 100],
             [['tel'], 'string', 'max' => 11],
-            [['username','email'],'unique'],
+            [['username','email','tel'],'unique'],
             [['email'],'email'],
+            [['tel_code'],'integer'],
             ['code','captcha','captchaAction'=>'member/captcha'],
-            [['username','code','password','rePassword'], 'required'],
+            [['username','code','tel_code','password','rePassword'], 'required'],
             ];
 
     }
@@ -72,6 +75,8 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             'password'=>'密码：',
             'rePassword'=> '确认密码：',
             'code'=>'验证码：',
+            'tel_code' => '验证码：',
+            'agree'=>'我已阅读并同意《用户注册协议》'
         ];
     }
 

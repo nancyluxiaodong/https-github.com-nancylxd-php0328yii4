@@ -38,6 +38,36 @@ class LoginForm extends Model{
                 //$admin->last_login_ip = $_SERVER["REMOTE_ADDR"];
                 $member->last_login_ip = ip2long(\Yii::$app->request->userIP);
                 $member->save(false);
+
+
+                //将cookie购物车同步到数据库
+                $cookies=\Yii::$app->request->cookies;
+                $cart=$cookies->get('cart');
+                if ($cart==null){
+                    $carts=[];
+                }else{
+                    $carts=unserialize($cart->value);
+                };
+                foreach (array_keys($carts) as $goods_id){
+                    //已登录
+                    $member_id=$member->id;
+                    $model=Cart::find()->where(['=','member_id',$member_id])->andWhere(['=','goods_id',$goods_id])->one();
+                    if($model){
+                        $model->amount+=$carts[$goods_id];
+                    }else{
+                        $model=new Cart();
+                        $model->member_id=$member_id;
+                        $model->goods_id=$goods_id;
+                        $model->amount=$carts[$goods_id];
+                    }
+                    $model->save();
+                }
+                //清除cookie中的cart数据
+                $cookies = \Yii::$app->response->cookies;
+                $cookies->remove('cart');
+                //var_dump($carts);exit;
+
+
                 return true;
             }else{
                 //密码错误.提示错误信息

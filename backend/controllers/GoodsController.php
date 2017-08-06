@@ -5,7 +5,9 @@ namespace backend\controllers;
 use backend\models\Goods;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
+use backend\models\GoodsGallery;
 use backend\models\GoodsIntro;
+use flyok666\qiniu\Qiniu;
 use yii\helpers\ArrayHelper;
 use yii\web\Request;
 use flyok666\uploadifive\UploadAction;
@@ -104,9 +106,16 @@ class GoodsController extends \yii\web\Controller
 
     //商品相册
     public function actionGallery($id){
-        $goods = Goods::findOne(['id'=>$id]);
-        return $this->render('gallery',['goods'=>$goods]);
+    $goods=GoodsGallery::find()->where(['goods_id'=>$id])->all();
+    return $this->render('gallery', ['goods' => $goods,'goods_id'=>$id]);
+}
+    public function actionDelPhoto(){
+        $id=\Yii::$app->request->post('id');
+        if(GoodsGallery::deleteAll(['id'=>$id])){
+            return 'success';
+        }
     }
+
     //商品详情页面
     public function actionIntro($id){
         $model = Goods::findOne($id);
@@ -117,38 +126,46 @@ class GoodsController extends \yii\web\Controller
     //图片
     public function actions() {
         return [
-            //文本编辑器
-            'upload' => [
+            'upload' => [//百度编辑器
                 'class' => 'kucha\ueditor\UEditorAction',
             ],
-            //图片
-            's-upload' => [
+            's-upload' => [//uploadifive图片上传
                 'class' => UploadAction::className(),
                 'basePath' => '@webroot/upload',
                 'baseUrl' => '@web/upload',
                 'enableCsrf' => true, // default
                 'postFieldName' => 'Filedata', // default
-                'overwriteIfExist' => true,
+                'overwriteIfExist' => true,//如果文件已存在，是否覆盖
                 'format' => function (UploadAction $action) {
                     $fileext = $action->uploadfile->getExtension();
-                    $filehash = sha1(uniqid() . time());
-                    $p1 = substr($filehash, 0, 2);
-                    $p2 = substr($filehash, 2, 2);
-                    return "{$p1}/{$p2}/{$filehash}.{$fileext}";
-                },
-                //END CLOSURE BY TIME
+                    $fileName='brand/'.date('Ymd').'/'.uniqid().'.'.$fileext;
+                    return $fileName;
+                },//文件的保存方式
                 'validateOptions' => [
-                    'extensions' => ['jpg', 'png'],
+                    'extensions' => ['jpg', 'png','gif'],
                     'maxSize' => 1 * 1024 * 1024, //file size
                 ],
                 'beforeValidate' => function (UploadAction $action) {
-                    //throw new Exception('test error');
                 },
                 'afterValidate' => function (UploadAction $action) {},
                 'beforeSave' => function (UploadAction $action) {},
                 'afterSave' => function (UploadAction $action) {
-                    $action->output['fileUrl'] = $action->getWebUrl//输出文件相对路径
-                    ();
+                    //将图片上传到七牛云
+                    $qiniu = new Qiniu(\Yii::$app->params['qiniu']);
+                    $qiniu->uploadFile(
+                        $action->getSavePath(), $action->getWebUrl()
+                    );
+                    $goods_id = \Yii::$app->request->post('goods_id');
+                    if ( $goods_id){
+                        $goodsgellery=new GoodsGallery();
+                        $goodsgellery->goods_id=$goods_id;
+                        $goodsgellery->path=$action->getWebUrl();
+                        $goodsgellery->save();
+                        $action->output['fileUrl']  =$goodsgellery->path;
+                        $action->output['id']  =$goodsgellery->id;
+                    }else{
+                        $action->output['fileUrl']  =$action->getWebUrl();
+                    }
                 },
             ],
         ];

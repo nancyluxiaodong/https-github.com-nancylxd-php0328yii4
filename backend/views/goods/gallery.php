@@ -10,7 +10,7 @@ echo Uploadifive::widget([
     'csrf' => true,
     'renderTag' => false,
     'jsOptions' => [
-        'formData'=>['goods_id'=>$goods->id],//上传文件的同时传参goods_id
+        'formData'=>['goods_id'=>$goods_id],//上传文件的同时传参goods_id
         'width' => 80,
         'height' => 30,
         'onError' => new JsExpression(<<<EOF
