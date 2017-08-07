@@ -242,7 +242,7 @@ class GoodsController extends Controller
                 $goods_order->logo=$goods_buy->logo;
                 $goods_order->price=$goods_buy->shop_price;
                 $goods_order->amount=$carts[$id];
-                $goods_order->total=$goods_buy->shop_price*$carts[$id];//
+                $goods_order->total=$goods_buy->shop_price*$carts[$id];///
                 $goods_order->save();
                 //更新商品库存
                 $goods_buy->stock-=$carts[$id];//
