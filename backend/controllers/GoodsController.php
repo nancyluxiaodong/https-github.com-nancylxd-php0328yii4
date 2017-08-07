@@ -8,6 +8,7 @@ use backend\models\GoodsDayCount;
 use backend\models\GoodsGallery;
 use backend\models\GoodsIntro;
 use flyok666\qiniu\Qiniu;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Request;
 use flyok666\uploadifive\UploadAction;
@@ -141,12 +142,12 @@ class GoodsController extends \yii\web\Controller
                     $fileName='brand/'.date('Ymd').'/'.uniqid().'.'.$fileext;
                     return $fileName;
                 },//文件的保存方式
-                'validateOptions' => [
+                /*'validateOptions' => [
                     'extensions' => ['jpg', 'png','gif'],
                     'maxSize' => 1 * 1024 * 1024, //file size
                 ],
                 'beforeValidate' => function (UploadAction $action) {
-                },
+                    },
                 'afterValidate' => function (UploadAction $action) {},
                 'beforeSave' => function (UploadAction $action) {},
                 'afterSave' => function (UploadAction $action) {
@@ -166,9 +167,35 @@ class GoodsController extends \yii\web\Controller
                     }else{
                         $action->output['fileUrl']  =$action->getWebUrl();
                     }
-                },
+                },*/
             ],
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            'ACF'=>[
+                'class'=>AccessControl::className(),
+                //哪些操作需要使用该过滤控制器
+                'only'=>['add','delete','edit'],
+                'rules'=>[
+                    [    //是否允许
+                        'allow'=>true,
+                        //指定操作
+                        'actions'=>['add','delete','edit'],
+                        //指定角色 ?表示未认证用户(未登录) @表示已认证用户(已登录)
+                        'roles'=>['@'],
+                    ],
+                    [
+                        'allow'=>true,
+                        'actions'=>['index'],
+                        'matchCallback'=>function(){
+                            return !(date('d')%2);
+                        }
+                    ],
+                    //其他均禁止访问
+                ]
+            ]
+        ];
+    }
 }
